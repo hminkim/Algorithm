@@ -1,24 +1,21 @@
 def solution(sequence, k):
     answer = []
-    start, end = 0,0
-    temp = sequence[0]
-    min_len = 1000001
+    right = 0
+    count = 0
 
-    while start <= end < len(sequence):
-        if temp == k :
-            if end - start + 1 < min_len :
-                min_len = end - start + 1
-                answer = [start, end]
-            temp -= sequence[start]
-            start += 1
+    for left in range(len(sequence)):
 
-        elif temp < k :
-            end += 1
-            if end < len(sequence) :
-                temp += sequence[end]
+        while right < len(sequence) and count < k:
+            count += sequence[right]
+            right += 1
 
-        elif temp > k :
-            temp -= sequence[start]
-            start += 1
+        if count == k:
+            if not answer:
+                answer = [left, right - 1]
+            else:
+                if answer[1] - answer[0] > right - 1 - left:
+                    answer = [left, right - 1]
+
+        count -= sequence[left]
 
     return answer
